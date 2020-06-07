@@ -1,23 +1,52 @@
 #include "Kernel.hpp"
 
-SimpleKernel::SimpleKernel(QObject *parent) : Qv2rayPlugin::QvPluginKernel(parent)
+NaiveProxyKernel::NaiveProxyKernel(QObject *parent) : Qv2rayPlugin::QvPluginKernel(parent)
 {
 }
-bool SimpleKernel::StartKernel()
+bool NaiveProxyKernel::StartKernel()
 {
+    // FIXME: KERNEL EXECUTABLE PATH
+    const auto executablePath = "/usr/bin/naiveproxy";
+    QStringList arguments;
+
+    // proxy
+    {
+        QUrl url;
+        url.setScheme(protocol.replace("naive+", ""));
+        url.setUserName(username);
+        url.setPassword(password);
+        url.setHost(host);
+        url.setPort(port);
+        arguments << QString("--proxy=%1").arg(url.url());
+    }
+
+    // listen socks
+    if (this->socksPort)
+    {
+        arguments << QString("--listen=socks://0.0.0.0:%1").arg(socksPort);
+    }
+
+    // listen http
+    if (this->httpPort)
+    {
+        arguments << QString("--listen=http://0.0.0.0:%1").arg(httpPort);
+    }
+
+    // launch
+    // FIXME: Use Another Thread
+    this->process->execute(executablePath, arguments);
     return true;
 }
-void SimpleKernel::SetConnectionSettings(const QString &listenAddress, const QMap<QString, int> &inbound, const QJsonObject &settings)
+void NaiveProxyKernel::SetConnectionSettings(const QMap<KernelSetting, QVariant> &options, const QJsonObject &settings)
 {
-    Q_UNUSED(inbound)
-    Q_UNUSED(settings)
-    Q_UNUSED(listenAddress)
+    this->socksPort = options[KernelSetting::KERNEL_SOCKS_ENABLED].toBool() ? options[KernelSetting::KERNEL_SOCKS_PORT].toInt() : 0;
+    this->httpPort = options[KernelSetting::KERNEL_HTTP_ENABLED].toBool() ? options[KernelSetting::KERNEL_HTTP_PORT].toInt() : 0;
+    this->host = settings["host"].toString();
+    this->port = settings["port"].toInt();
+    this->protocol = settings["protocol"].toString();
 }
-bool SimpleKernel::StopKernel()
+bool NaiveProxyKernel::StopKernel()
 {
+    this->process->terminate();
     return true;
-}
-const QList<Qv2rayPlugin::QvPluginOutboundProtocolObject> SimpleKernel::KernelOutboundCapabilities() const
-{
-    return { { "Fake outbound", "pseudo" } };
 }

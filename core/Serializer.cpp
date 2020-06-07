@@ -1,1 +1,47 @@
 #include "Serializer.hpp"
+
+const QString NaiveProxySerializer::SerializeOutbound(const QString &protocol, const QString &alias, const QString &,
+                                                      const QJsonObject &object) const
+{
+    if (protocol != "naive+https" || protocol != "naive+quic")
+        throw QString("unknown protocol: %1").arg(protocol);
+
+    QUrl url;
+    url.setScheme(protocol);
+    url.setUserName(object["username"].toString());
+    url.setPassword(object["password"].toString());
+    url.setHost(object["host"].toString());
+    url.setPort(object["port"].toInt());
+    url.setFragment(alias);
+
+    return url.toString();
+}
+
+const QPair<QString, QJsonObject> NaiveProxySerializer::DeserializeOutbound(const QString &link, QString *alias, QString *errorMessage) const
+{
+    QUrl url(link);
+    if (!url.isValid())
+    {
+        *errorMessage = url.errorString();
+        return {};
+    }
+
+    if (const auto description = url.fragment(); !description.isEmpty())
+        *alias = url.fragment();
+    else
+        *alias = QString("[%1]-%2:%3").arg(url.scheme(), url.host()).arg(url.port());
+
+    return { url.scheme(),
+             {
+                 { "protocol", url.scheme() },
+                 { "username", url.userName() },
+                 { "password", url.password() },
+                 { "host", url.host() },
+                 { "port", url.port() },
+             } };
+}
+
+const Qv2rayPlugin::QvPluginOutboundInfoObject NaiveProxySerializer::GetOutboundInfo(const QString &protocol, const QJsonObject &outbound) const
+{
+    return { outbound["host"].toString(), protocol, outbound["port"].toInt() };
+}

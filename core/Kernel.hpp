@@ -1,14 +1,23 @@
 #pragma once
 #include "QvPluginProcessor.hpp"
 
-class SimpleKernel : public Qv2rayPlugin::QvPluginKernel
+class NaiveProxyKernel : public Qv2rayPlugin::QvPluginKernel
 {
   public:
-    explicit SimpleKernel(QObject *parent = nullptr);
-    /// Kernel related operations
-    void SetConnectionSettings(const QString &listenAddress, const QMap<QString, int> &inbound, const QJsonObject &settings) override;
+    explicit NaiveProxyKernel(QObject *parent = nullptr);
     bool StartKernel() override;
     bool StopKernel() override;
-    /// Key = DisplayName, Value = protocol.
-    const QList<Qv2rayPlugin::QvPluginOutboundProtocolObject> KernelOutboundCapabilities() const override;
+    void SetConnectionSettings(const QMap<KernelSetting, QVariant> &options, const QJsonObject &settings) override;
+
+  private:
+    QString protocol;
+    QString host;
+    QString username;
+    QString password;
+    int port;
+    std::unique_ptr<QProcess> process;
+
+  private:
+    int socksPort = 0;
+    int httpPort = 0;
 };

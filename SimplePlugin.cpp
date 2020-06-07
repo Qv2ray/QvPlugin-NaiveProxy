@@ -4,43 +4,40 @@
 #include <QLabel>
 #include <QMetaEnum>
 
-std::shared_ptr<QvPluginKernel> SimplePlugin::GetKernel()
+std::unique_ptr<QvPluginKernel> NaiveProxyPlugin::CreateKernel()
 {
-    return kernel;
+    return std::make_unique<NaiveProxyKernel>();
 }
 
-bool SimplePlugin::UpdateSettings(const QJsonObject &conf)
+bool NaiveProxyPlugin::UpdateSettings(const QJsonObject &conf)
 {
     settings = conf;
     return true;
 }
 
-bool SimplePlugin::Initialize(const QString &, const QJsonObject &settings)
+bool NaiveProxyPlugin::Initialize(const QString &, const QJsonObject &settings)
 {
     emit PluginLog("Initialize plugin.");
     this->settings = settings;
-    serializer = std::make_shared<SimpleSerializer>(this);
-    eventHandler = std::make_shared<SimpleEventHandler>(this);
-    kernel = std::make_shared<SimpleKernel>(this);
     return true;
 }
 
-const QJsonObject SimplePlugin::GetSettngs()
+const QJsonObject NaiveProxyPlugin::GetSettngs()
 {
     return settings;
 }
 
-std::shared_ptr<QvPluginEventHandler> SimplePlugin::GetEventHandler()
+std::shared_ptr<QvPluginEventHandler> NaiveProxyPlugin::GetEventHandler()
 {
     return eventHandler;
 }
 
-std::unique_ptr<QWidget> SimplePlugin::GetSettingsWidget()
+std::unique_ptr<QWidget> NaiveProxyPlugin::GetSettingsWidget()
 {
     return std::make_unique<QLabel>("Text!");
 }
 
-std::unique_ptr<QvPluginEditor> SimplePlugin::GetEditorWidget(UI_TYPE type)
+std::unique_ptr<QvPluginEditor> NaiveProxyPlugin::GetEditorWidget(UI_TYPE type)
 {
     switch (type)
     {
@@ -51,7 +48,7 @@ std::unique_ptr<QvPluginEditor> SimplePlugin::GetEditorWidget(UI_TYPE type)
     return nullptr;
 }
 
-std::shared_ptr<QvPluginSerializer> SimplePlugin::GetSerializer()
+std::shared_ptr<QvPluginSerializer> NaiveProxyPlugin::GetSerializer()
 {
     return serializer;
 }

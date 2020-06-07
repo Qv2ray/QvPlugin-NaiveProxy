@@ -11,7 +11,7 @@
 class QLabel;
 using namespace Qv2rayPlugin;
 
-class SimplePlugin
+class NaiveProxyPlugin
     : public QObject
     , Qv2rayInterface
 {
@@ -24,21 +24,21 @@ class SimplePlugin
     const QvPluginMetadata GetMetadata() const override
     {
         return QvPluginMetadata{
-            "QvSimplePlugin",                                 //
-            "Qv2ray Workgroup",                               //
-            "qvplugin_test",                                  //
-            "QvSimplePlugin is a simple plugin for testing.", //
-            QIcon(":/qv2ray.png"),                            //
-            { CAPABILITY_CONNECTION_ENTRY,                    //
-              CAPABILITY_CONNECTIVITY,                        //
-              CAPABILITY_STATS,                               //
-              CAPABILITY_SYSTEM_PROXY },                      //
-            { SPECIAL_TYPE_KERNEL,                            //
-              SPECIAL_TYPE_SERIALIZOR }                       //
+            "QvPlugin-NaiveProxy", //
+            "Qv2ray Workgroup",    //
+            "qvplugin_naiveproxy", //
+            "NaiveProxy Plugin.",  //
+            QIcon(":/qv2ray.png"), //
+            {
+                CAPABILITY_CONNECTION_ENTRY, //
+                CAPABILITY_CONNECTIVITY,
+            },                          //
+            { SPECIAL_TYPE_KERNEL,      //
+              SPECIAL_TYPE_SERIALIZOR } //
         };
     }
     //
-    std::shared_ptr<QvPluginKernel> GetKernel() override;
+    std::unique_ptr<QvPluginKernel> CreateKernel() override;
     std::shared_ptr<QvPluginSerializer> GetSerializer() override;
     std::shared_ptr<QvPluginEventHandler> GetEventHandler() override;
     std::unique_ptr<QvPluginEditor> GetEditorWidget(UI_TYPE) override;
