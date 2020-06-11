@@ -22,6 +22,6 @@ class NaiveProxySerializer : public Qv2rayPlugin::QvPluginSerializer
     }
     const QList<QString> OutboundProtocols() const override
     {
-        return { "naive+https", "naive+quic" };
+        return { "naive" };
     }
 };

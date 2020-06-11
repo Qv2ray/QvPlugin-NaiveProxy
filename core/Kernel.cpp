@@ -2,13 +2,14 @@
 
 NaiveProxyKernel::NaiveProxyKernel(QObject *parent) : Qv2rayPlugin::QvPluginKernel(parent)
 {
-    connect(process.get(), &QProcess::readyRead, [this]() { emit this->OnKernelLogAvailable(process->readAll()); });
-    connect(process.get(), &QProcess::stateChanged, [this]() {
-        if (this->isStarted)
+    process.setProcessChannelMode(QProcess::MergedChannels);
+    connect(&process, &QProcess::readyRead, [this]() { emit this->OnKernelLogAvailable(process.readAll()); });
+    connect(&process, &QProcess::stateChanged, [this]() {
+        if (this->isStarted && process.state() == QProcess::ProcessState::NotRunning)
         {
             this->isStarted = false;
-            emit OnKernelCrashed(tr("Naiveproxy kernel crashed"));
             StopKernel();
+            emit OnKernelCrashed(tr("Naiveproxy kernel crashed"));
         }
     });
 }
@@ -48,22 +49,25 @@ bool NaiveProxyKernel::StartKernel()
 
     // launch
     // FIXME: Use Another Thread
-    this->process->execute(executablePath, arguments);
+    this->process.start(executablePath, arguments);
     isStarted = true;
     return true;
 }
 void NaiveProxyKernel::SetConnectionSettings(const QMap<KernelSetting, QVariant> &options, const QJsonObject &settings)
 {
-    this->listenIp = options[KernelSetting::KERNEL_LISTEN_ADDRESS].toString();
-    this->socksPort = options[KernelSetting::KERNEL_SOCKS_ENABLED].toBool() ? options[KernelSetting::KERNEL_SOCKS_PORT].toInt() : 0;
-    this->httpPort = options[KernelSetting::KERNEL_HTTP_ENABLED].toBool() ? options[KernelSetting::KERNEL_HTTP_PORT].toInt() : 0;
+    this->listenIp = options[KERNEL_LISTEN_ADDRESS].toString();
+    this->socksPort = options[KERNEL_SOCKS_ENABLED].toBool() ? options[KERNEL_SOCKS_PORT].toInt() : 0;
+    this->httpPort = options[KERNEL_HTTP_ENABLED].toBool() ? options[KERNEL_HTTP_PORT].toInt() : 0;
     this->host = settings["host"].toString();
     this->port = settings["port"].toInt();
+    this->username = settings["username"].toString();
+    this->password = settings["password"].toString();
     this->protocol = settings["protocol"].toString();
 }
 bool NaiveProxyKernel::StopKernel()
 {
-    this->process->terminate();
-    this->process->waitForFinished();
+    isStarted = false;
+    this->process.terminate();
+    this->process.waitForFinished();
     return true;
 }

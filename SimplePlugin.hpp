@@ -23,19 +23,18 @@ class NaiveProxyPlugin
     // Basic metainfo of this plugin
     const QvPluginMetadata GetMetadata() const override
     {
-        return QvPluginMetadata{
-            "QvPlugin-NaiveProxy", //
-            "Qv2ray Workgroup",    //
-            "qvplugin_naiveproxy", //
-            "NaiveProxy Plugin.",  //
-            QIcon(":/qv2ray.png"), //
-            {
-                CAPABILITY_CONNECTION_ENTRY, //
-                CAPABILITY_CONNECTIVITY,
-            },                          //
+        auto x = QvPluginMetadata{
+            "NaiveProxy Plugin",        //
+            "Qv2ray Workgroup",         //
+            "qvplugin_naiveproxy",      //
+            "NaiveProxy Plugin.",       //
+            QIcon(":/qv2ray.png"),      //
+            {},                         //
             { SPECIAL_TYPE_KERNEL,      //
               SPECIAL_TYPE_SERIALIZOR } //
         };
+        x.KernelOutboundCapabilities = { { "NaiveProxy", "naive" } };
+        return x;
     }
     //
     std::unique_ptr<QvPluginKernel> CreateKernel() override;

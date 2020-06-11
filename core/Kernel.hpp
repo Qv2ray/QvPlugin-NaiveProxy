@@ -16,7 +16,7 @@ class NaiveProxyKernel : public Qv2rayPlugin::QvPluginKernel
     QString password;
     QString listenIp;
     int port;
-    std::unique_ptr<QProcess> process;
+    QProcess process;
 
   private:
     bool isStarted = false;

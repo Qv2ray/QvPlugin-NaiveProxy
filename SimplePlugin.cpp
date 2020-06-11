@@ -19,6 +19,8 @@ bool NaiveProxyPlugin::Initialize(const QString &, const QJsonObject &settings)
 {
     emit PluginLog("Initialize plugin.");
     this->settings = settings;
+    this->serializer = std::make_unique<NaiveProxySerializer>();
+    this->eventHandler = std::make_unique<NaiveEventHandler>();
     return true;
 }
 
