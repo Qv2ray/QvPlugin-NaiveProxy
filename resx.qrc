@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>assets/qv2ray.png</file>
+        <file>assets/naive.png</file>
     </qresource>
 </RCC>

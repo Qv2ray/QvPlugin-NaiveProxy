@@ -28,7 +28,7 @@ class NaiveProxyPlugin
             "Qv2ray Workgroup",         //
             "qvplugin_naiveproxy",      //
             "NaiveProxy Plugin.",       //
-            QIcon(":/qv2ray.png"),      //
+            QIcon(":/assets/naive.png"),      //
             {},                         //
             { SPECIAL_TYPE_KERNEL,      //
               SPECIAL_TYPE_SERIALIZOR } //
