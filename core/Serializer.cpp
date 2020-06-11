@@ -3,9 +3,6 @@
 const QString NaiveProxySerializer::SerializeOutbound(const QString &protocol, const QString &alias, const QString &,
                                                       const QJsonObject &object) const
 {
-    if (protocol != "naive+https" || protocol != "naive+quic")
-        throw QString("unknown protocol: %1").arg(protocol);
-
     QUrl url;
     url.setScheme(protocol);
     url.setUserName(object["username"].toString());
@@ -26,9 +23,10 @@ const QPair<QString, QJsonObject> NaiveProxySerializer::DeserializeOutbound(cons
         return {};
     }
 
-    if (const auto description = url.fragment(); !description.isEmpty())
+    const auto description = url.fragment();
+    if (!description.isEmpty())
     {
-        *alias = url.fragment();
+        *alias = description;
     }
     else
     {
