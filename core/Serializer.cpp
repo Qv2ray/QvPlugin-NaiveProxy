@@ -27,9 +27,13 @@ const QPair<QString, QJsonObject> NaiveProxySerializer::DeserializeOutbound(cons
     }
 
     if (const auto description = url.fragment(); !description.isEmpty())
+    {
         *alias = url.fragment();
+    }
     else
+    {
         *alias = QString("[%1]-%2:%3").arg(url.scheme(), url.host()).arg(url.port());
+    }
 
     return { url.scheme(),
              {
