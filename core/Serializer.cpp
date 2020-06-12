@@ -4,7 +4,7 @@ const QString NaiveProxySerializer::SerializeOutbound(const QString &protocol, c
                                                       const QJsonObject &object) const
 {
     QUrl url;
-    url.setScheme(object["protocol"].toString());
+    url.setScheme(protocol + "+" + object["protocol"].toString());
     url.setUserName(object["username"].toString());
     url.setPassword(object["password"].toString());
     url.setHost(object["host"].toString());
@@ -33,7 +33,7 @@ const QPair<QString, QJsonObject> NaiveProxySerializer::DeserializeOutbound(cons
         *alias = QString("[%1]-%2:%3").arg(url.scheme()).arg(url.host()).arg(url.port());
     }
 
-    return { url.scheme(), //
+    return { "naive", //
              QJsonObject{
                  { "protocol", url.scheme() },
                  { "host", url.host() },

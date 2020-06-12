@@ -1,5 +1,7 @@
 #include "Kernel.hpp"
 
+#include "SimplePlugin.hpp"
+
 NaiveProxyKernel::NaiveProxyKernel(QObject *parent) : Qv2rayPlugin::QvPluginKernel(parent)
 {
     process.setProcessChannelMode(QProcess::MergedChannels);
@@ -16,13 +18,9 @@ NaiveProxyKernel::NaiveProxyKernel(QObject *parent) : Qv2rayPlugin::QvPluginKern
 bool NaiveProxyKernel::StartKernel()
 {
     // FIXME: KERNEL EXECUTABLE PATH
-    const auto executablePath = "/usr/bin/naiveproxy";
-    QStringList arguments;
+    const auto executablePath = pluginInstance->GetSettngs()["kernelPath"].toString();
 
-    // log
-    {
-        arguments << "--log";
-    }
+    QStringList arguments{ "--log" };
 
     // proxy
     {

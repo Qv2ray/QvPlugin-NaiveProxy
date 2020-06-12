@@ -27,6 +27,12 @@ add_library(${PROJECT_NAME} MODULE
     core/Serializer.hpp
     core/Kernel.cpp
     core/Kernel.hpp
+    ui/OutboundEditor.ui
+    ui/OutboundEditor.cpp
+    ui/OutboundEditor.hpp
+    ui/SettingsWidget.cpp
+    ui/SettingsWidget.hpp
+    ui/SettingsWidget.ui
     resx.qrc
     ${QVPLUGIN_INTERFACE_HEADERS})
 

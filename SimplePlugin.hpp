@@ -55,5 +55,6 @@ class NaiveProxyPlugin
     QJsonObject settings;
     std::shared_ptr<QvPluginSerializer> serializer;
     std::shared_ptr<QvPluginEventHandler> eventHandler;
-    std::shared_ptr<QvPluginKernel> kernel;
 };
+
+inline NaiveProxyPlugin *pluginInstance;
