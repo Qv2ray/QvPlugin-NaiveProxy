@@ -37,13 +37,11 @@ class OutboundEditor
     void changeEvent(QEvent *e);
 
   private slots:
-    void on_comboBox_currentTextChanged(const QString &arg1);
-
-    void on_userTxt_textEdited(const QString &arg1);
-
-    void on_passTxt_textEdited(const QString &arg1);
-
-    void on_paddingCB_stateChanged(int arg1);
+    void on_comboProtocol_currentTextChanged(const QString &arg1);
+    void on_textUsername_editingFinished();
+    void on_textUsername_textEdited(const QString &arg1);
+    void on_textPassword_textEdited(const QString &arg1);
+    void on_checkPadding_stateChanged(int arg1);
 
   private:
     QJsonObject root;

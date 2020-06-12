@@ -1,8 +1,19 @@
 #pragma once
+#include <QJsonObject>
+#include <QtGlobal>
+
+#ifndef DEFAULT_KERNEL_PATH
+    #ifdef Q_OS_WIN
+        #define DEFAULT_KERNEL_PATH (QApplication::applicationDirPath() + "naiveproxy.exe")
+    #elif defined(Q_OS_MAC)
+        #define DEFAULT_KERNEL_PATH (QApplication::applicationDirPath() + "naiveproxy")
+    #else
+        #define DEFAULT_KERNEL_PATH "/bin/naiveproxy"
+    #endif
+#endif
 
 #include "ui_SettingsWidget.h"
 
-#include <QJsonObject>
 class SettingsWidget
     : public QWidget
     , private Ui::SettingsWidget
@@ -16,9 +27,9 @@ class SettingsWidget
     void changeEvent(QEvent *e);
 
   private slots:
-    void on_pushButton_clicked();
-
-    void on_lineEdit_textEdited(const QString &arg1);
+    void on_textKernelPath_textEdited(const QString &arg1);
+    void on_buttonBrowseKernel_clicked();
+    void on_buttonTestKernel_clicked();
 
   private:
     QJsonObject *root;

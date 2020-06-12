@@ -1,14 +1,9 @@
 #include "SettingsWidget.hpp"
 
 #include <QFileDialog>
+#include <QMessageBox>
+#include <QProcess>
 
-#ifndef DEFAULT_KERNEL_PATH
-    #ifdef Q_OS_LINUX
-        #define DEFAULT_KERNEL_PATH "/bin/naiveproxy"
-    #elif defined(Q_OS_MAC) || defined(Q_OS_WIN)
-        #define DEFAULT_KERNEL_PATH (QApplication::applicationDirPath() + "naiveproxy.exe")
-    #endif
-#endif
 SettingsWidget::SettingsWidget(QJsonObject *r, QWidget *parent) : QWidget(parent)
 {
     setupUi(this);
@@ -17,7 +12,7 @@ SettingsWidget::SettingsWidget(QJsonObject *r, QWidget *parent) : QWidget(parent
     {
         root->insert("kernelPath", DEFAULT_KERNEL_PATH);
     }
-    lineEdit->setText(root->value("kernelPath").toString());
+    textKernelPath->setText(root->value("kernelPath").toString());
 }
 
 void SettingsWidget::changeEvent(QEvent *e)
@@ -30,18 +25,50 @@ void SettingsWidget::changeEvent(QEvent *e)
     }
 }
 
-void SettingsWidget::on_pushButton_clicked()
+void SettingsWidget::on_textKernelPath_textEdited(const QString &arg1)
+{
+    root->insert("kernelPath", arg1);
+}
+
+void SettingsWidget::on_buttonBrowseKernel_clicked()
 {
     const auto core = QFileDialog::getOpenFileName(this, tr("Open NaiveProxy Kernel"), QDir::currentPath());
 
     if (!core.isEmpty())
     {
-        lineEdit->setText(core);
-        on_lineEdit_textEdited(core);
+        textKernelPath->setText(core);
+        on_textKernelPath_textEdited(core);
     }
 }
 
-void SettingsWidget::on_lineEdit_textEdited(const QString &arg1)
+void SettingsWidget::on_buttonTestKernel_clicked()
 {
-    root->insert("kernelPath", arg1);
+    const auto path = this->textKernelPath->text();
+    if (path.isEmpty())
+    {
+        QMessageBox::warning(this, tr("Invalid Configuration"), tr("Kernel path is empty."));
+        return;
+    }
+
+    QProcess process;
+
+#ifdef Q_OS_WIN32
+    process.setProgram(path);
+    process.setProcessChannelMode(QProcess::MergedChannels);
+    process.setNativeArguments("--version");
+    process.start();
+#else
+    process.start(path, { "--version" });
+#endif
+    process.waitForStarted();
+    process.waitForFinished();
+    const auto exitCode = process.exitCode();
+    if (exitCode != 0)
+    {
+        QMessageBox::warning(this, tr("NaiveProxy Core Test Failed"), tr("NaiveProxy Core failed with exit code %1").arg(exitCode));
+        return;
+    }
+
+    QString output = process.readAllStandardOutput();
+    QMessageBox::information(this, tr("NaiveProxy Test Result"), tr("NaiveProxy: %1").arg(output));
 }

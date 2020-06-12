@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>250</width>
-    <height>178</height>
+    <width>252</width>
+    <height>190</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,14 +15,17 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="labelProtocol">
      <property name="text">
       <string>Protocol</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="comboProtocol">
      <item>
       <property name="text">
        <string notr="true">https</string>
@@ -36,34 +39,47 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="labelUsername">
      <property name="text">
       <string>Username</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
      </property>
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QLineEdit" name="userTxt"/>
+    <widget class="QLineEdit" name="textUsername"/>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="labelPassword">
      <property name="text">
       <string>Password</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
      </property>
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QLineEdit" name="passTxt"/>
+    <widget class="QLineEdit" name="textPassword">
+     <property name="echoMode">
+      <enum>QLineEdit::PasswordEchoOnEdit</enum>
+     </property>
+    </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="label_4">
+    <widget class="QLabel" name="labelPadding">
      <property name="text">
       <string>Padding</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QCheckBox" name="paddingCB">
+    <widget class="QCheckBox" name="checkPadding">
      <property name="text">
       <string>Enabled</string>
      </property>
