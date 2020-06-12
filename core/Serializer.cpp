@@ -15,7 +15,10 @@ const QString NaiveProxySerializer::SerializeOutbound(const QString &protocol, c
     url.setHost(object["host"].toString());
     url.setPort(object["port"].toInt(443));
 
-    url.setQuery(QUrlQuery{ { "padding", object["padding"].toBool() ? "true" : "false" } });
+    QUrlQuery query;
+    query.setQueryItems({ { "padding", object["padding"].toBool() ? "true" : "false" } });
+    url.setQuery(query);
+
     url.setFragment(alias);
 
     return url.toString();
