@@ -16,6 +16,7 @@ class NaiveProxyKernel : public Qv2rayPlugin::QvPluginKernel
     QString username;
     QString password;
     QString listenIp;
+    bool padding;
     int port;
     QProcess process;
 

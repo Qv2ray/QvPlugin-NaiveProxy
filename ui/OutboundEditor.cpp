@@ -11,6 +11,7 @@ void OutboundEditor::SetContent(const QJsonObject &r)
     userTxt->setText(root["username"].toString());
     passTxt->setText(root["password"].toString());
     comboBox->setCurrentText(root["protocol"].toString());
+    paddingCB->setChecked(root["padding"].toBool());
 }
 
 void OutboundEditor::changeEvent(QEvent *e)
@@ -37,4 +38,9 @@ void OutboundEditor::on_userTxt_textEdited(const QString &arg1)
 void OutboundEditor::on_passTxt_textEdited(const QString &arg1)
 {
     root["password"] = arg1;
+}
+
+void OutboundEditor::on_paddingCB_stateChanged(int arg1)
+{
+    root["padding"] = arg1 == Qt::Checked;
 }

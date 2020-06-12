@@ -34,6 +34,11 @@ bool NaiveProxyKernel::StartKernel()
         arguments << QString("--proxy=%1").arg(url.url());
     }
 
+    if (this->padding)
+    {
+        arguments << "--padding";
+    }
+
     // listen socks
     if (this->socksPort)
     {
@@ -62,6 +67,7 @@ void NaiveProxyKernel::SetConnectionSettings(const QMap<KernelSetting, QVariant>
     this->username = settings["username"].toString();
     this->password = settings["password"].toString();
     this->protocol = settings["protocol"].toString();
+    this->padding = settings["padding"].toBool();
 }
 
 bool NaiveProxyKernel::StopKernel()

@@ -3,14 +3,16 @@
 const QString NaiveProxySerializer::SerializeOutbound(const QString &protocol, const QString &alias, const QString &,
                                                       const QJsonObject &object) const
 {
+    QUrlQuery q;
+    q.setQueryItems({ { "padding", object["padding"].toBool() ? "true" : "false" } });
     QUrl url;
     url.setScheme(protocol + "+" + object["protocol"].toString());
     url.setUserName(object["username"].toString());
     url.setPassword(object["password"].toString());
     url.setHost(object["host"].toString());
     url.setPort(object["port"].toInt());
+    url.setQuery(q);
     url.setFragment(alias);
-
     return url.toString();
 }
 
@@ -32,7 +34,7 @@ const QPair<QString, QJsonObject> NaiveProxySerializer::DeserializeOutbound(cons
     {
         *alias = QString("[%1]-%2:%3").arg(url.scheme()).arg(url.host()).arg(url.port());
     }
-
+    const QStringList trueList = { "1", "true", "yes", "y", "on" };
     return { "naive", //
              QJsonObject{
                  { "protocol", url.scheme() },
@@ -40,6 +42,7 @@ const QPair<QString, QJsonObject> NaiveProxySerializer::DeserializeOutbound(cons
                  { "port", url.port() },
                  { "username", url.userName() },
                  { "password", url.password() },
+                 { "password", trueList.contains(QUrlQuery{ url }.queryItemValue("padding").toLower()) } //
              } };
 }
 

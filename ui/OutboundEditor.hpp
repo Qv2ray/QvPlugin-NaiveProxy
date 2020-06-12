@@ -43,6 +43,8 @@ class OutboundEditor
 
     void on_passTxt_textEdited(const QString &arg1);
 
+    void on_paddingCB_stateChanged(int arg1);
+
   private:
     QJsonObject root;
 };
