@@ -5,7 +5,7 @@ const QString NaiveProxySerializer::SerializeOutbound(const QString &protocol, c
 {
     QUrl url;
 
-    url.setScheme(protocol + "+" + object["protocol"].toString());
+    url.setScheme(object["protocol"].toString());
 
     if (const auto username = object["username"].toString(); !username.isEmpty())
         url.setUserName(username);

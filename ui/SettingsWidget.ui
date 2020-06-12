@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>488</width>
-    <height>146</height>
+    <height>464</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,6 +56,12 @@
        <property name="text">
         <string>...</string>
        </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
     </layout>
@@ -65,10 +71,37 @@
      <property name="text">
       <string>Test Run</string>
      </property>
+     <property name="default">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QLabel" name="labelNotes">
+     <property name="text">
+      <string>Too young, too simple;
+Sometimes naive!
+
+--- The Elder Jiang</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>textKernelPath</tabstop>
+  <tabstop>buttonBrowseKernel</tabstop>
+  <tabstop>buttonTestKernel</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
