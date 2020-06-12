@@ -11,7 +11,7 @@ NaiveProxyKernel::NaiveProxyKernel(QObject *parent) : Qv2rayPlugin::QvPluginKern
         {
             this->isStarted = false;
             StopKernel();
-            emit OnKernelCrashed(tr("Naiveproxy kernel crashed"));
+            emit OnKernelCrashed(tr("NaiveProxy kernel crashed with code %1").arg(process.exitCode()));
         }
     });
 }
@@ -27,8 +27,11 @@ bool NaiveProxyKernel::StartKernel()
     {
         QUrl url;
         url.setScheme(protocol.replace("naive+", ""));
-        url.setUserName(username);
-        url.setPassword(password);
+        if (!username.isEmpty() || !password.isEmpty())
+        {
+            url.setUserName(username);
+            url.setPassword(password);
+        }
         url.setHost(host);
         url.setPort(port);
         arguments << QString("--proxy=%1").arg(url.url());
@@ -63,7 +66,7 @@ void NaiveProxyKernel::SetConnectionSettings(const QMap<KernelSetting, QVariant>
     this->socksPort = options[KERNEL_SOCKS_ENABLED].toBool() ? options[KERNEL_SOCKS_PORT].toInt() : 0;
     this->httpPort = options[KERNEL_HTTP_ENABLED].toBool() ? options[KERNEL_HTTP_PORT].toInt() : 0;
     this->host = settings["host"].toString();
-    this->port = settings["port"].toInt();
+    this->port = settings["port"].toInt(443);
     this->username = settings["username"].toString();
     this->password = settings["password"].toString();
     this->protocol = settings["protocol"].toString();
