@@ -11,10 +11,11 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets Network Gui REQUIRED)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(QVPLUGIN_INTERFACE_INCLUDE_DIR "interface/")
+set(QVPLUGIN_HAS_HTTP_TO_SOCKS_HELPER ON)
 include(interface/QvPluginInterface.cmake)
 include_directories(${QVPLUGIN_INTERFACE_INCLUDE_DIR})
 
@@ -39,4 +40,5 @@ add_library(${PROJECT_NAME} MODULE
 target_link_libraries(${PROJECT_NAME}
     Qt5::Core
     Qt5::Gui
+    Qt5::Network
     Qt5::Widgets)

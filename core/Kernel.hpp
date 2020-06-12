@@ -1,5 +1,6 @@
 #pragma once
 #include "QvPluginProcessor.hpp"
+#include "interface/utils/HttpProxy.hpp"
 
 class NaiveProxyKernel : public Qv2rayPlugin::QvPluginKernel
 {
@@ -22,4 +23,5 @@ class NaiveProxyKernel : public Qv2rayPlugin::QvPluginKernel
     bool isStarted = false;
     int socksPort = 0;
     int httpPort = 0;
+    Qv2rayPlugin::Utils::HttpProxy httpProxy;
 };

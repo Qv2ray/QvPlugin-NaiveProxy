@@ -15,6 +15,7 @@ NaiveProxyKernel::NaiveProxyKernel(QObject *parent) : Qv2rayPlugin::QvPluginKern
         }
     });
 }
+
 bool NaiveProxyKernel::StartKernel()
 {
     // FIXME: KERNEL EXECUTABLE PATH
@@ -42,15 +43,15 @@ bool NaiveProxyKernel::StartKernel()
     // listen http
     if (this->httpPort)
     {
-        arguments << QString("--listen=http://%1:%2").arg(listenIp).arg(httpPort);
+        httpProxy.httpListen(QHostAddress(listenIp), httpPort, socksPort);
     }
 
     // launch
-    // FIXME: Use Another Thread
     this->process.start(executablePath, arguments);
     isStarted = true;
     return true;
 }
+
 void NaiveProxyKernel::SetConnectionSettings(const QMap<KernelSetting, QVariant> &options, const QJsonObject &settings)
 {
     this->listenIp = options[KERNEL_LISTEN_ADDRESS].toString();
@@ -62,8 +63,13 @@ void NaiveProxyKernel::SetConnectionSettings(const QMap<KernelSetting, QVariant>
     this->password = settings["password"].toString();
     this->protocol = settings["protocol"].toString();
 }
+
 bool NaiveProxyKernel::StopKernel()
 {
+    if (this->httpPort)
+    {
+        httpProxy.close();
+    }
     isStarted = false;
     this->process.terminate();
     this->process.waitForFinished();
