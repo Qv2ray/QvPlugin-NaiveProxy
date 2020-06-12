@@ -38,7 +38,6 @@ class OutboundEditor
 
   private slots:
     void on_comboProtocol_currentTextChanged(const QString &arg1);
-    void on_textUsername_editingFinished();
     void on_textUsername_textEdited(const QString &arg1);
     void on_textPassword_textEdited(const QString &arg1);
     void on_checkPadding_stateChanged(int arg1);
