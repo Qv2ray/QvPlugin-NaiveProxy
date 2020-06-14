@@ -8,9 +8,11 @@ OutboundEditor::OutboundEditor(QWidget *parent) : Qv2rayPlugin::QvPluginEditor(p
 void OutboundEditor::SetContent(const QJsonObject &r)
 {
     root = r;
+    const auto protocol = root["protocol"].toString();
+
     textUsername->setText(root["username"].toString());
     textPassword->setText(root["password"].toString());
-    comboProtocol->setCurrentText(root["protocol"].toString());
+    comboProtocol->setCurrentText(protocol != "https" && protocol != "quic" ? "https" : root["protocol"].toString());
     checkPadding->setChecked(root["padding"].toBool());
 }
 
