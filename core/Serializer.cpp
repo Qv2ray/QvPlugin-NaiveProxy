@@ -1,7 +1,6 @@
 #include "Serializer.hpp"
 
-const QString NaiveProxySerializer::SerializeOutbound(const QString &protocol, const QString &alias, const QString &,
-                                                      const QJsonObject &object) const
+const QString NaiveProxySerializer::SerializeOutbound(const QString &, const QString &alias, const QString &, const QJsonObject &object) const
 {
     QUrl url;
     if (const auto protocol = object["protocol"].toString(); protocol != "https" && protocol != "quic")
@@ -15,7 +14,11 @@ const QString NaiveProxySerializer::SerializeOutbound(const QString &protocol, c
         url.setPassword(password);
 
     url.setHost(object["host"].toString());
-    url.setPort(object["port"].toInt(443));
+
+    if (const auto port = object["port"].toInt(443); port <= 0 || port >= 65536)
+        url.setPort(443);
+    else
+        url.setPort(port);
 
     QUrlQuery query;
     query.setQueryItems({ { "padding", object["padding"].toBool() ? "true" : "false" } });

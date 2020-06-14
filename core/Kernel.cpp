@@ -81,6 +81,12 @@ void NaiveProxyKernel::SetConnectionSettings(const QMap<KernelSetting, QVariant>
         emit OnKernelLogAvailable(QString("warning: outbound protocol %1 is falled back to https"));
         this->protocol = "https";
     }
+
+    if (this->port <= 0 || this->port >= 65536)
+    {
+        emit OnKernelLogAvailable(QString("warning: outbound port %1 is falled back to 443"));
+        this->port = 443;
+    }
 }
 
 bool NaiveProxyKernel::StopKernel()
