@@ -2,6 +2,8 @@
 
 #include "SimplePlugin.hpp"
 
+#include <QMessageBox>
+
 NaiveProxyKernel::NaiveProxyKernel(QObject *parent) : Qv2rayPlugin::QvPluginKernel(parent)
 {
     process.setProcessChannelMode(QProcess::MergedChannels);
@@ -21,7 +23,7 @@ bool NaiveProxyKernel::StartKernel()
     const auto executablePath = pluginInstance->GetSettngs()["kernelPath"].toString();
     if (!QFile::exists(executablePath))
     {
-        emit OnKernelCrashed(tr("NaiveProxy kernel not found. Please configure in plugin settings."));
+        QMessageBox::warning(nullptr, tr("Naive!"), tr("We cannot find your NaiveProxy kernel. Please configure it in the plugin settings."));
         return false;
     }
 
