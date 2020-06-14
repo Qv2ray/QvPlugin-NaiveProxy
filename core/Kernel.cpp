@@ -18,8 +18,12 @@ NaiveProxyKernel::NaiveProxyKernel(QObject *parent) : Qv2rayPlugin::QvPluginKern
 
 bool NaiveProxyKernel::StartKernel()
 {
-    // FIXME: KERNEL EXECUTABLE PATH
     const auto executablePath = pluginInstance->GetSettngs()["kernelPath"].toString();
+    if (!QFile::exists(executablePath))
+    {
+        emit OnKernelCrashed(tr("NaiveProxy kernel not found. Please configure in plugin settings."));
+        return false;
+    }
 
     QStringList arguments{ "--log" };
 
@@ -71,6 +75,12 @@ void NaiveProxyKernel::SetConnectionSettings(const QMap<KernelSetting, QVariant>
     this->password = settings["password"].toString();
     this->protocol = settings["protocol"].toString();
     this->padding = settings["padding"].toBool();
+
+    if (this->protocol != "https" && this->protocol != "quic")
+    {
+        emit OnKernelLogAvailable(QString("warning: outbound protocol %1 is falled back to https"));
+        this->protocol = "https";
+    }
 }
 
 bool NaiveProxyKernel::StopKernel()
