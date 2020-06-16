@@ -4,9 +4,9 @@ const QString NaiveProxySerializer::SerializeOutbound(const QString &, const QSt
 {
     QUrl url;
     if (const auto protocol = object["protocol"].toString(); protocol != "https" && protocol != "quic")
-        url.setScheme("https");
+        url.setScheme("naive+https");
     else
-        url.setScheme(protocol);
+        url.setScheme("naive+" + protocol);
 
     if (const auto username = object["username"].toString(); !username.isEmpty())
         url.setUserName(username);
