@@ -13,7 +13,6 @@ void OutboundEditor::SetContent(const QJsonObject &r)
     textUsername->setText(root["username"].toString());
     textPassword->setText(root["password"].toString());
     comboProtocol->setCurrentText(protocol != "https" && protocol != "quic" ? "https" : root["protocol"].toString());
-    checkPadding->setChecked(root["padding"].toBool());
 }
 
 void OutboundEditor::changeEvent(QEvent *e)
