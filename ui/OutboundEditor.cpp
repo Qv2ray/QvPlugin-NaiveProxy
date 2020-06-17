@@ -41,8 +41,3 @@ void OutboundEditor::on_textPassword_textEdited(const QString &arg1)
 {
     root["password"] = arg1;
 }
-
-void OutboundEditor::on_checkPadding_stateChanged(int arg1)
-{
-    root["padding"] = arg1 == Qt::Checked;
-}

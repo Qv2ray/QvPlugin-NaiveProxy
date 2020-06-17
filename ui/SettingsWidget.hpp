@@ -4,9 +4,9 @@
 
 #ifndef DEFAULT_KERNEL_PATH
     #ifdef Q_OS_WIN
-        #define DEFAULT_KERNEL_PATH (QApplication::applicationDirPath() + "naiveproxy.exe")
+        #define DEFAULT_KERNEL_PATH (QApplication::applicationDirPath() + "/naiveproxy.exe")
     #elif defined(Q_OS_MAC)
-        #define DEFAULT_KERNEL_PATH (QApplication::applicationDirPath() + "naiveproxy")
+        #define DEFAULT_KERNEL_PATH (QApplication::applicationDirPath() + "/naiveproxy")
     #else
         #define DEFAULT_KERNEL_PATH "/bin/naiveproxy"
     #endif

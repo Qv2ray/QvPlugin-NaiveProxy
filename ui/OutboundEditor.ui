@@ -68,23 +68,6 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="labelPadding">
-     <property name="text">
-      <string>Padding</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::PlainText</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QCheckBox" name="checkPadding">
-     <property name="text">
-      <string>Enabled</string>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <resources/>

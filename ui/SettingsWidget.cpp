@@ -43,10 +43,18 @@ void SettingsWidget::on_buttonBrowseKernel_clicked()
 
 void SettingsWidget::on_buttonTestKernel_clicked()
 {
+    // avoid empty path
     const auto path = this->textKernelPath->text();
     if (path.isEmpty())
     {
         QMessageBox::warning(this, tr("Invalid Configuration"), tr("Kernel path is empty."));
+        return;
+    }
+
+    // avoid non-exist kernel file
+    if (!QFile::exists(path))
+    {
+        QMessageBox::warning(nullptr, tr("Naive!"), tr("We cannot find your NaiveProxy kernel. Please configure it in the plugin settings."));
         return;
     }
 

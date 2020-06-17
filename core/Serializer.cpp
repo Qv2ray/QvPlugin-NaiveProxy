@@ -20,10 +20,6 @@ const QString NaiveProxySerializer::SerializeOutbound(const QString &, const QSt
     else
         url.setPort(port);
 
-    QUrlQuery query;
-    query.setQueryItems({ { "padding", object["padding"].toBool() ? "true" : "false" } });
-    url.setQuery(query);
-
     url.setFragment(alias);
 
     return url.toString();
@@ -47,16 +43,12 @@ const QPair<QString, QJsonObject> NaiveProxySerializer::DeserializeOutbound(cons
     {
         *alias = QString("[%1]-%2:%3").arg(url.scheme()).arg(url.host()).arg(url.port());
     }
-    const QStringList trueList = { "1", "true", "yes", "y", "on" };
-    const auto usePadding = trueList.contains(QUrlQuery{ url }.queryItemValue("padding").toLower());
     return { "naive", QJsonObject{ { "protocol", url.scheme() },
                                    { "host", url.host() },
                                    { "port", url.port(443) },
                                    { "username", url.userName() },
-                                   { "password", url.password() },
-                                   { "padding", usePadding } } };
+                                   { "password", url.password() } } };
 }
-
 const Qv2rayPlugin::QvPluginOutboundInfoObject NaiveProxySerializer::GetOutboundInfo(const QString &protocol, const QJsonObject &outbound) const
 {
     return { outbound["host"].toString(), protocol, outbound["port"].toInt() };
