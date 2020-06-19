@@ -99,6 +99,6 @@ bool NaiveProxyKernel::StopKernel()
     }
     isStarted = false;
     this->process.terminate();
-    this->process.waitForFinished();
+//    this->process.waitForFinished();
     return true;
 }
