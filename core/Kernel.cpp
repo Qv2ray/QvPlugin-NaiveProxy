@@ -98,7 +98,7 @@ bool NaiveProxyKernel::StopKernel()
         httpProxy.close();
     }
     isStarted = false;
-    this->process.terminate();
-//    this->process.waitForFinished();
+    this->process.kill();
+    this->process.waitForFinished();
     return true;
 }
