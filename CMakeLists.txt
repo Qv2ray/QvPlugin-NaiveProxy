@@ -17,6 +17,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(QVPLUGIN_INTERFACE_INCLUDE_DIR "interface/")
 set(QVPLUGIN_HAS_HTTP_TO_SOCKS_HELPER ON)
 include(interface/QvPluginInterface.cmake)
+include(interface/QvGUIPluginInterface.cmake)
 include_directories(${QVPLUGIN_INTERFACE_INCLUDE_DIR})
 
 add_library(${PROJECT_NAME} MODULE
@@ -36,7 +37,8 @@ add_library(${PROJECT_NAME} MODULE
     ui/SettingsWidget.ui
     ui/UIInterface.hpp
     resx.qrc
-    ${QVPLUGIN_INTERFACE_HEADERS})
+    ${QVPLUGIN_INTERFACE_HEADERS}
+    ${QVGUIPLUGIN_INTERFACE_HEADERS})
 
 if(APPLE)
     add_custom_command(TARGET ${PROJECT_NAME}

@@ -28,3 +28,16 @@ class NaiveProxyKernel : public Qv2rayPlugin::PluginKernel
     int httpPort = 0;
     Qv2rayPlugin::Utils::HttpProxy httpProxy;
 };
+
+class NaiveKernelInterface : public Qv2rayPlugin::PluginKernelInterface
+{
+  public:
+    virtual std::unique_ptr<Qv2rayPlugin::PluginKernel> CreateKernel() const override
+    {
+        return std::make_unique<NaiveProxyKernel>();
+    }
+    virtual QList<QString> GetKernelProtocols() const override
+    {
+        return { "naive" };
+    }
+};
