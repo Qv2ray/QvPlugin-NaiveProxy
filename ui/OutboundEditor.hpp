@@ -12,24 +12,24 @@ class OutboundEditor
 
   public:
     explicit OutboundEditor(QWidget *parent = nullptr);
-    void SetHostInfo(const QString &address, int port)
+    void SetHostAddress(const QString &address, int port) override
     {
         root["host"] = address;
         root["port"] = port;
     }
-    QPair<QString, int> GetHostInfo() const
+    QPair<QString, int> GetHostAddress() const override
     {
         return { root["host"].toString(), root["port"].toInt() };
     }
     //
-    void SetContent(const QJsonObject &);
-    const QJsonObject GetContent() const
+    void SetContent(const QJsonObject &) override;
+    const QJsonObject GetContent() const override
     {
         return root;
     }
 
   protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
   private slots:
     void on_comboProtocol_currentTextChanged(const QString &arg1);

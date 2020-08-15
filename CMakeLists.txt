@@ -34,6 +34,7 @@ add_library(${PROJECT_NAME} MODULE
     ui/SettingsWidget.cpp
     ui/SettingsWidget.hpp
     ui/SettingsWidget.ui
+    ui/UIInterface.hpp
     resx.qrc
     ${QVPLUGIN_INTERFACE_HEADERS})
 
