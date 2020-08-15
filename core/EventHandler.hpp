@@ -1,8 +1,8 @@
 #pragma once
 #include "QvPluginProcessor.hpp"
 
-class NaiveEventHandler : public Qv2rayPlugin::QvPluginEventHandler
+class NaiveEventHandler : public Qv2rayPlugin::PluginEventHandler
 {
   public:
-    NaiveEventHandler(QObject *parent = nullptr);
+    NaiveEventHandler();
 };

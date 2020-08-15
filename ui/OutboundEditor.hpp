@@ -1,5 +1,6 @@
 #pragma once
 
+#include "interface/QvGUIPluginInterface.hpp"
 #include "interface/QvPluginProcessor.hpp"
 #include "ui_OutboundEditor.h"
 
@@ -25,12 +26,6 @@ class OutboundEditor
     const QJsonObject GetContent() const
     {
         return root;
-    }
-    //
-    void SwitchOutbound(const QString &){};
-    QList<Qv2rayPlugin::QvPluginOutboundProtocolObject> OutboundCapabilities() const
-    {
-        return { { "NaiveProxy", "naive" } };
     }
 
   protected:

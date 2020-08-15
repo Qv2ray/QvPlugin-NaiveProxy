@@ -1,6 +1,9 @@
 #include "Serializer.hpp"
 
-const QString NaiveProxySerializer::SerializeOutbound(const QString &, const QString &alias, const QString &, const QJsonObject &object) const
+#include <QUrlQuery>
+
+const QString NaiveProxyOutboundHandler::SerializeOutbound(const QString &, const QString &alias, const QString &,
+                                                           const QJsonObject &object) const
 {
     QUrl url;
     if (const auto protocol = object["protocol"].toString(); protocol != "https" && protocol != "quic")
@@ -29,7 +32,8 @@ const QString NaiveProxySerializer::SerializeOutbound(const QString &, const QSt
     return url.toString();
 }
 
-const QPair<QString, QJsonObject> NaiveProxySerializer::DeserializeOutbound(const QString &link, QString *alias, QString *errorMessage) const
+const QPair<QString, QJsonObject> NaiveProxyOutboundHandler::DeserializeOutbound(const QString &link, QString *alias,
+                                                                                 QString *errorMessage) const
 {
     QUrl url(link);
     if (!url.isValid())
@@ -57,7 +61,11 @@ const QPair<QString, QJsonObject> NaiveProxySerializer::DeserializeOutbound(cons
                                    { "padding", usePadding } } };
 }
 
-const Qv2rayPlugin::QvPluginOutboundInfoObject NaiveProxySerializer::GetOutboundInfo(const QString &protocol, const QJsonObject &outbound) const
+const Qv2rayPlugin::OutboundInfoObject NaiveProxyOutboundHandler::GetOutboundInfo(const QString &protocol, const QJsonObject &outbound) const
 {
-    return { outbound["host"].toString(), protocol, outbound["port"].toInt() };
+    return { //
+             { Qv2rayPlugin::INFO_PROTOCOL, protocol },
+             { Qv2rayPlugin::INFO_SERVER, outbound["host"].toString() },
+             { Qv2rayPlugin::INFO_PORT, outbound["port"].toInt() }
+    };
 }

@@ -1,10 +1,11 @@
 #include "Kernel.hpp"
 
 #include "SimplePlugin.hpp"
+#include "interface/QvPluginInterface.hpp"
 
-#include <QMessageBox>
+#include <QFile>
 
-NaiveProxyKernel::NaiveProxyKernel(QObject *parent) : Qv2rayPlugin::QvPluginKernel(parent)
+NaiveProxyKernel::NaiveProxyKernel() : Qv2rayPlugin::PluginKernel()
 {
     process.setProcessChannelMode(QProcess::MergedChannels);
     connect(&process, &QProcess::readyRead, [this]() { emit this->OnKernelLogAvailable(process.readAll()); });
@@ -23,7 +24,8 @@ bool NaiveProxyKernel::StartKernel()
     const auto executablePath = pluginInstance->GetSettngs()["kernelPath"].toString();
     if (!QFile::exists(executablePath))
     {
-        QMessageBox::warning(nullptr, tr("Naive!"), tr("We cannot find your NaiveProxy kernel. Please configure it in the plugin settings."));
+        pluginInstance->PluginErrorMessageBox(tr("Naive!"),
+                                              tr("We cannot find your NaiveProxy kernel. Please configure it in the plugin settings."));
         return false;
     }
 
@@ -66,7 +68,7 @@ bool NaiveProxyKernel::StartKernel()
     return true;
 }
 
-void NaiveProxyKernel::SetConnectionSettings(const QMap<KernelSetting, QVariant> &options, const QJsonObject &settings)
+void NaiveProxyKernel::SetConnectionSettings(const QMap<Qv2rayPlugin::KernelOptionFlags, QVariant> &options, const QJsonObject &settings)
 {
     this->listenIp = options[KERNEL_LISTEN_ADDRESS].toString();
     this->socksPort = options[KERNEL_SOCKS_ENABLED].toBool() ? options[KERNEL_SOCKS_PORT].toInt() : 0;

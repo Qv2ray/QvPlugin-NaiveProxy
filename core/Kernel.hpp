@@ -2,13 +2,15 @@
 #include "QvPluginProcessor.hpp"
 #include "interface/utils/HttpProxy.hpp"
 
-class NaiveProxyKernel : public Qv2rayPlugin::QvPluginKernel
+#include <QProcess>
+
+class NaiveProxyKernel : public Qv2rayPlugin::PluginKernel
 {
   public:
-    explicit NaiveProxyKernel(QObject *parent = nullptr);
+    explicit NaiveProxyKernel();
     bool StartKernel() override;
     bool StopKernel() override;
-    void SetConnectionSettings(const QMap<KernelSetting, QVariant> &options, const QJsonObject &settings) override;
+    void SetConnectionSettings(const QMap<Qv2rayPlugin::KernelOptionFlags, QVariant> &options, const QJsonObject &settings) override;
 
   private:
     QString protocol;
