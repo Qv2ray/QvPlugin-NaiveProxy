@@ -14,7 +14,7 @@ class NaiveUIInterface : public Qv2rayPlugin::PluginGUIInterface
     }
     virtual std::unique_ptr<QvPluginSettingsWidget> createSettingsWidgets() const override
     {
-        return nullptr;
+        return std::make_unique<SettingsWidget>();
     }
     virtual QList<typed_plugin_editor> createInboundEditors() const override
     {
@@ -30,6 +30,6 @@ class NaiveUIInterface : public Qv2rayPlugin::PluginGUIInterface
     }
     virtual QList<PluginGuiComponentType> GetComponents() const override
     {
-        return { GUI_COMPONENT_OUTBOUND_EDITOR };
+        return { GUI_COMPONENT_SETTINGS, GUI_COMPONENT_OUTBOUND_EDITOR };
     }
 };

@@ -12,16 +12,30 @@
     #endif
 #endif
 
+#include "interface/QvGUIPluginInterface.hpp"
 #include "ui_SettingsWidget.h"
 
 class SettingsWidget
-    : public QWidget
+    : public Qv2rayPlugin::QvPluginSettingsWidget
     , private Ui::SettingsWidget
 {
     Q_OBJECT
 
   public:
-    explicit SettingsWidget(QJsonObject *r, QWidget *parent = nullptr);
+    explicit SettingsWidget(QWidget *parent = nullptr);
+    void SetSettings(const QJsonObject &settings) override
+    {
+        root = settings;
+        if (!root.contains("kernelPath"))
+        {
+            root.insert("kernelPath", DEFAULT_KERNEL_PATH);
+        }
+        textKernelPath->setText(root.value("kernelPath").toString());
+    }
+    QJsonObject GetSettings() override
+    {
+        return root;
+    }
 
   protected:
     void changeEvent(QEvent *e);
@@ -32,5 +46,5 @@ class SettingsWidget
     void on_buttonTestKernel_clicked();
 
   private:
-    QJsonObject *root;
+    QJsonObject root;
 };

@@ -4,15 +4,9 @@
 #include <QMessageBox>
 #include <QProcess>
 
-SettingsWidget::SettingsWidget(QJsonObject *r, QWidget *parent) : QWidget(parent)
+SettingsWidget::SettingsWidget(QWidget *parent) : Qv2rayPlugin::QvPluginSettingsWidget(parent)
 {
     setupUi(this);
-    root = r;
-    if (!root->contains("kernelPath"))
-    {
-        root->insert("kernelPath", DEFAULT_KERNEL_PATH);
-    }
-    textKernelPath->setText(root->value("kernelPath").toString());
 }
 
 void SettingsWidget::changeEvent(QEvent *e)
@@ -27,7 +21,7 @@ void SettingsWidget::changeEvent(QEvent *e)
 
 void SettingsWidget::on_textKernelPath_textEdited(const QString &arg1)
 {
-    root->insert("kernelPath", arg1);
+    root.insert("kernelPath", arg1);
 }
 
 void SettingsWidget::on_buttonBrowseKernel_clicked()
