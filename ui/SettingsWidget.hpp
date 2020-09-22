@@ -32,13 +32,14 @@ class SettingsWidget
         }
         textKernelPath->setText(root.value("kernelPath").toString());
     }
+
     QJsonObject GetSettings() override
     {
         return root;
     }
 
   protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
 
   private slots:
     void on_textKernelPath_textEdited(const QString &arg1);

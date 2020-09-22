@@ -21,11 +21,11 @@ NaiveProxyKernel::NaiveProxyKernel() : Qv2rayPlugin::PluginKernel()
 
 bool NaiveProxyKernel::StartKernel()
 {
-    const auto executablePath = pluginInstance->GetSettngs()["kernelPath"].toString();
+    const auto executablePath = NaiveProxyPluginInstance->GetSettngs()["kernelPath"].toString();
     if (!QFile::exists(executablePath))
     {
-        pluginInstance->PluginErrorMessageBox(tr("Naive!"),
-                                              tr("We cannot find your NaiveProxy kernel. Please configure it in the plugin settings."));
+        NaiveProxyPluginInstance->PluginErrorMessageBox(
+            tr("Naive!"), tr("We cannot find your NaiveProxy kernel. Please configure it in the plugin settings."));
         return false;
     }
 
