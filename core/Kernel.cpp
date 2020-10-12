@@ -40,7 +40,16 @@ bool NaiveProxyKernel::StartKernel()
             url.setUserName(username);
             url.setPassword(password);
         }
-        url.setHost(host);
+        if (!sni.isEmpty())
+        {
+            // ### Hack : SNI is used for proxychains
+            url.setHost(sni);
+            arguments << QString("--host-resolver-rules=MAP %1 127.0.0.1").arg(sni);
+        }
+        else
+        {
+            url.setHost(host);
+        }
         url.setPort(port);
         arguments << QString("--proxy=%1").arg(url.url());
     }
@@ -70,6 +79,7 @@ bool NaiveProxyKernel::StartKernel()
 
 void NaiveProxyKernel::SetConnectionSettings(const QMap<Qv2rayPlugin::KernelOptionFlags, QVariant> &options, const QJsonObject &settings)
 {
+    sni.clear();
     this->listenIp = options[KERNEL_LISTEN_ADDRESS].toString();
     this->socksPort = options[KERNEL_SOCKS_ENABLED].toBool() ? options[KERNEL_SOCKS_PORT].toInt() : 0;
     this->httpPort = options[KERNEL_HTTP_ENABLED].toBool() ? options[KERNEL_HTTP_PORT].toInt() : 0;
@@ -79,16 +89,21 @@ void NaiveProxyKernel::SetConnectionSettings(const QMap<Qv2rayPlugin::KernelOpti
     this->password = settings["password"].toString();
     this->protocol = settings["protocol"].toString();
     this->padding = settings["padding"].toBool();
+    //
+    // Special SNI option
+    if (settings.contains("sni"))
+        sni = settings["sni"].toString();
+    //
 
     if (this->protocol != "https" && this->protocol != "quic")
     {
-        emit OnKernelLogAvailable(QString("warning: outbound protocol %1 is falled back to https"));
+        emit OnKernelLogAvailable("warning: outbound protocol falled back to https");
         this->protocol = "https";
     }
 
     if (this->port <= 0 || this->port >= 65536)
     {
-        emit OnKernelLogAvailable(QString("warning: outbound port %1 is falled back to 443"));
+        emit OnKernelLogAvailable("warning: outbound port falled back to 443");
         this->port = 443;
     }
 }

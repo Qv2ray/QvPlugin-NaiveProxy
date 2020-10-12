@@ -21,6 +21,8 @@ class NaiveProxyKernel : public Qv2rayPlugin::PluginKernel
     bool padding;
     int port;
     QProcess process;
+    //
+    QString sni;
 
   private:
     bool isStarted = false;
