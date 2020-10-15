@@ -11,6 +11,10 @@ class NaiveProxyKernel : public Qv2rayPlugin::PluginKernel
     bool StartKernel() override;
     bool StopKernel() override;
     void SetConnectionSettings(const QMap<Qv2rayPlugin::KernelOptionFlags, QVariant> &options, const QJsonObject &settings) override;
+    QString GetKernelName() const override
+    {
+        return "Naive";
+    }
 
   private:
     QString protocol;
