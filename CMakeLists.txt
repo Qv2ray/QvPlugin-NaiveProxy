@@ -51,3 +51,5 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Gui
     Qt5::Network
     Qt5::Widgets)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION share/qv2ray/plugins)
